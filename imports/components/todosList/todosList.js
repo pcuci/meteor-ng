@@ -9,9 +9,13 @@ class TodosListCtrl {
 
     this.helpers({
       tasks() {
-        return Tasks.find({});
+        return Tasks.find({}, {
+          sort: {
+            createdAt: -1
+          }
+        });
       }
-    })
+    });
   }
 
   addTask(newTask) {
@@ -23,6 +27,19 @@ class TodosListCtrl {
 
     // Clear form
     this.newTask = '';
+  }
+
+  setChecked(task) {
+    // Set the checked property to the opposite of its current value
+    Tasks.update(task._id, {
+      $set: {
+        checked: !task.checked
+      }
+    });
+  }
+
+  removeTask(task) {
+    Tasks.remove(task._id);
   }
 }
 
